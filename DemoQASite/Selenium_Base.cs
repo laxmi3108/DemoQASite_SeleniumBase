@@ -14,9 +14,10 @@ namespace DemoQASite
 {
     public class Selenium_Base
     {
-        public IWebDriver Driver = null;
-        public IWebDriver lastInstance = null;
-        public Actions instance;
+        private IWebDriver Driver=null;
+        private IWebDriver lastInstance=null;
+        private IJavaScriptExecutor Js;
+        private Actions instance;
 
         public void init()
         {
@@ -58,17 +59,12 @@ namespace DemoQASite
 
         public void open(string link)
         {
-            init();
-            DriverConfig config = DriverConfig.Default();
+            Driver = new ChromeDriver();
 
-            if (config.FullScreen)
-            {
-                Driver.Manage().Window.FullScreen();
-            }
-            if (config.Maximize)
-            {
-                Driver.Manage().Window.Maximize();
-            }
+            Js = (IJavaScriptExecutor)Driver;
+
+            Driver.Manage().Window.Maximize();
+
             Driver.Navigate().GoToUrl(link);
         }
 
@@ -83,6 +79,14 @@ namespace DemoQASite
             Driver.Navigate().Refresh();
         }
 
+        public void BackBrowser()
+        {
+            Driver.Navigate().Back();
+        }
+        public void ForwardBrowser()
+        {
+            Driver.Navigate().Forward();
+        }
         public void switchBackToPreviousDriver()
         {
             if (Driver != null)
